@@ -45,6 +45,8 @@ tasks.withType(Pmd) {
 }
 
 dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
     compileOnly 'com.google.code.findbugs:annotations:3.0.1'
     compileOnly 'com.google.code.findbugs:jsr305:3.0.1'
 
@@ -52,5 +54,5 @@ dependencies {
 }
 
 application {
-    mainClass = 'limitorderbook.App'
+    mainClass = 'limitorderbook.Application'
 }
