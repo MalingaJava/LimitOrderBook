@@ -49,6 +49,29 @@ public class OrderBook {
         });
     }
 
+    public Double getOrderBySideAndLevel(final OrderSide side, final int level) {
+
+        if (side.asChar() == OrderSide.BID.asChar()) {
+            Iterator<ConcurrentNavigableMap
+                    .Entry<Double, List<Order>>> itr = bid.entrySet().iterator();
+            int i = 1;
+            while (itr.hasNext()) {
+                ConcurrentNavigableMap
+                        .Entry<Double, List<Order>> entry
+                        = itr.next();
+                if(i == level){
+                    return entry.getKey();
+                }
+                i++;
+            }
+        } else if (side.asChar() == OrderSide.ASK.asChar()) {
+
+        } else {
+            // TODO: Log this.
+        }
+        return 0d;
+    }
+
     private void processAdd(final Map<Double, List<Order>> map, final Order order) {
         List<Order> orderList = map.computeIfAbsent(order.price(), k -> new LinkedList<>());
         orderList.add(order);
@@ -68,6 +91,8 @@ public class OrderBook {
         System.out.println("After Remove Map : " + bid);
         orderBook.modSizeByOrderId(bid, 100L, 1000L);
         System.out.println("After Size Change Map : " + bid);
+        Double price = orderBook.getOrderBySideAndLevel(OrderSide.BID, 2);
+        System.out.println("Price: " + price);
 
 
 //        offer.put(1, new LinkedList<>(List.of("Geeks1")));
