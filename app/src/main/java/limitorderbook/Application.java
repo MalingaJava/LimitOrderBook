@@ -68,7 +68,7 @@ public class Application {
 
         System.out.println("------------------ Remove order by order id -------------------------");
         // In here removing the order id 4.
-        orderBook.removeOrderById(orderBook.getBid(), 4);
+        orderBook.removeOrderById(4);
         System.out.println("After remove order id 3 from Order Book: ");
         orderBook.printMap(OrderSide.BID);
         System.out.println("---------------------------------------------------------------------");
@@ -76,8 +76,8 @@ public class Application {
         System.out.println("------------------ Modify the size by order id ----------------------");
         System.out.println("Before size change Order Book");
         orderBook.printMap(OrderSide.BID);
-        orderBook.modSizeByOrderId(orderBook.getBid(), 1, 1000);
-        System.out.println("After size change Order Book order id = 1, new size = 1000");
+        orderBook.modSizeByOrderId(2, 1000);
+        System.out.println("After size change Order Book order id = 2, new size = 1000");
         orderBook.printMap(OrderSide.BID);
         System.out.println("---------------------------------------------------------------------");
 

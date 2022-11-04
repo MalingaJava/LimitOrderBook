@@ -26,6 +26,10 @@ Please read the `OrderBook.java` class Java doc comments for more information.
 **Note: Data structures justification (ConcurrentSkipListMap/ConcurrentNavigableMap vs SynchronizedSortedMap vs TreeMap) 
 and more technical details we will discuss later during the interview.**
 
+## Assumptions
+1. I assume that when generating order ids, even oder ids always created for BID side and odd for OFFER side.
+   or any other very strong straight forward way for identify that.
+
 ## How to run
 There is a simple main method to demonstrate the use cases. 
 `./gradlew run`
@@ -48,4 +52,14 @@ Please suggest (but do not implement) modifications or additions to the Order an
 to make them better suited to support real-life, latency-sensitive trading operations.
 
 Answer:
-1. Oder id should be in rages.
+1. Rather than assigning random order id, there should be a way to identify an order side and symbol by looking 
+   at the id. For example, by prefix "MFG-BID-****", or Ranges "10000****". or else looking up the order id will 
+   take a lot of computational power.
+2. Use of low latency proven frameworks for handling large number of transactions and parsing data between systems.
+   For example LMAX disruptor (https://lmax-exchange.github.io/disruptor/). Lets discuss this further.
+3. When the system grows order books will grow bigger and bigger so we need low latency way of accessing them.
+   So we can use im-memory data grids, for example Hazelcast (https://hazelcast.com) or 
+   Apache Ignite (https://ignite.apache.org).
+4. Use of gRPC (https://grpc.io) kind of binary protocol instead of REST over HTTP to transfer data.
+5. If using Java as a backend language, we need to use correct garbage collector (concurrent mark and sweep), 
+   given that garbage collector will pause the system when collecting the garbage.

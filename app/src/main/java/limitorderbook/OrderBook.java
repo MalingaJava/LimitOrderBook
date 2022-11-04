@@ -71,10 +71,10 @@ public class OrderBook implements Serializable {
      * Given an order id, remove an Order from the OrderBook (order deletions are expected to occur
      * at ap- proximately 60% of the rate of order additions).
      *
-     * @param map     // TODO: need to remove this.
      * @param orderId order id.
      */
-    public void removeOrderById(final Map<Double, List<Order>> map, final long orderId) {
+    public void removeOrderById(final long orderId) {
+        ConcurrentNavigableMap<Double, List<Order>> map = checkSideByOrderId(orderId);
         map.forEach((key, value) -> {
             value.removeIf(s -> s.id() == orderId);
         });
@@ -85,12 +85,12 @@ public class OrderBook implements Serializable {
      * Given an order id and a new size, modify an existing order in the book to use the new size
      * (size modifications do not effect time priority).
      *
-     * @param map     // TODO: Remove this
      * @param orderId order id.
      * @param newSize new size.
      */
-    public void modSizeByOrderId(final Map<Double, List<Order>> map, final long orderId,
+    public void modSizeByOrderId(final long orderId,
                                  final long newSize) {
+        ConcurrentNavigableMap<Double, List<Order>> map = checkSideByOrderId(orderId);
         map.forEach((key, value) -> value.stream().filter(order -> order.id() ==
                 orderId).forEachOrdered(order -> order.size(newSize)));
     }
@@ -196,6 +196,17 @@ public class OrderBook implements Serializable {
     private void processAdd(final Map<Double, List<Order>> map, final Order order) {
         List<Order> orderList = map.computeIfAbsent(order.price(), k -> new LinkedList<>());
         orderList.add(order);
+    }
+
+    /**
+     * This is one and only assumption for the project, even numbers always
+     * generated for BID and odd for OFFER. Please refer the README.md for nore information.
+     *
+     * @param orderId order id.
+     * @return return true if its BID, false otherwise.
+     */
+    private ConcurrentNavigableMap<Double, List<Order>> checkSideByOrderId(final long orderId){
+        return (orderId % 2 == 0) ? bid : offer;
     }
 
     /**
