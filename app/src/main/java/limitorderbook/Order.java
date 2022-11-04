@@ -8,6 +8,11 @@ import lombok.experimental.Accessors;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * This is the class to hold the order information.
+ *
+ * @author Malinga.
+ */
 @Getter
 @Setter
 @Accessors(fluent = true, chain = true)
