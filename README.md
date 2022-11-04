@@ -23,7 +23,8 @@ Please read the `OrderBook.java` class Java doc comments for more information.
 6. Use case 6: Given a side return all the orders from that side of the book, in level- and time-order.\
    Implemented in `public void printMap(final OrderSide side)` method.
 
-Note: Data structures justification and more technical details we will discuss later during the interview.
+**Note: Data structures justification (ConcurrentSkipListMap/ConcurrentNavigableMap vs SynchronizedSortedMap vs TreeMap) 
+and more technical details we will discuss later during the interview.**
 
 ## How to run
 There is a simple main method to demonstrate the use cases. 
@@ -37,6 +38,9 @@ code is in good quality.**
 ## TODO
 1. Unit tests for all use cases: Due to time constraints didn't had time to write the unit tests. Sorry for that.
 2. Logging framework: Add logging framework to log the messages instead of System.out.println.
+3. Limit the order book size: Set the max size `MAX_ORDER_BOOK_SIZE` to the order book when constructing
+   `public OrderBook(final int orderBookSize)` we can use `pollLastEntry()` on the `ConcurrentSkipListMap`
+   to achieve this.
 
 # Part B of the assignment
 Question:
@@ -44,3 +48,4 @@ Please suggest (but do not implement) modifications or additions to the Order an
 to make them better suited to support real-life, latency-sensitive trading operations.
 
 Answer:
+1. Oder id should be in rages.

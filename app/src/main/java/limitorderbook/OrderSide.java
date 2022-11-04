@@ -8,7 +8,7 @@ package limitorderbook;
 public enum OrderSide {
     // TODO: Implement this properly
     BID('B'),
-    ASK('O');
+    OFFER('O');
 
     private final char asChar;
 

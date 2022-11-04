@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentNavigableMap;
 import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.stream.Stream;
 
 /**
  * This is the implementation of a limit order book stores customer orders on
@@ -20,7 +21,19 @@ public class OrderBook implements Serializable {
     // This is ConcurrentNavigableMap why I choose this, we may discuss during the interview.
     private final ConcurrentNavigableMap<Double, List<Order>> offer;
 
-    // TODO: Add default constructor
+    private int MAX_ORDER_BOOK_SIZE;
+
+    /**
+     * This constructor will instantiate bid/offer maps as ConcurrentSkipListMap.
+     * Bid order book is sorted Descending order from price and.
+     * Offer order book is sorted Ascending order from the price.
+     * Also note that it will keep the same price orders in a LinkedList on time priority basis.
+     */
+    public OrderBook(){
+        this.MAX_ORDER_BOOK_SIZE = 10;
+        bid = new ConcurrentSkipListMap<>((k1, k2) -> Double.compare(k2, k1));
+        offer = new ConcurrentSkipListMap<>();
+    }
 
     /**
      * This constructor will instantiate bid/offer maps as ConcurrentSkipListMap.
@@ -31,9 +44,7 @@ public class OrderBook implements Serializable {
      * @param orderBookSize order book size.
      */
     public OrderBook(final int orderBookSize) {
-        // TODO: Validate orderBookSize
-        // TODO: ConcurrentSkipListMap vs SynchronizedSortedMap vs TreeMap
-        // TODO: Use pollFirstEntry method to limit the map
+        this.MAX_ORDER_BOOK_SIZE = orderBookSize;
         bid = new ConcurrentSkipListMap<>((k1, k2) -> Double.compare(k2, k1));
         offer = new ConcurrentSkipListMap<>();
     }
@@ -47,7 +58,7 @@ public class OrderBook implements Serializable {
     public void putOrder(final Order order) {
         if (order.side() == OrderSide.BID.asChar()) {
             processAdd(bid, order);
-        } else if (order.side() == OrderSide.ASK.asChar()) {
+        } else if (order.side() == OrderSide.OFFER.asChar()) {
             processAdd(offer, order);
         } else {
             // TODO: Log this.
@@ -63,13 +74,11 @@ public class OrderBook implements Serializable {
      * @param map     // TODO: need to remove this.
      * @param orderId order id.
      */
-    public void removeOrderById(final Map<Double, List<Order>> map, final Long orderId) {
+    public void removeOrderById(final Map<Double, List<Order>> map, final long orderId) {
         map.forEach((key, value) -> {
             value.removeIf(s -> s.id() == orderId);
         });
     }
-
-    // TODO: long instead of Long
 
     /**
      * This is the third use case of the assignment.
@@ -80,8 +89,8 @@ public class OrderBook implements Serializable {
      * @param orderId order id.
      * @param newSize new size.
      */
-    public void modSizeByOrderId(final Map<Double, List<Order>> map, final Long orderId,
-                                 final Long newSize) {
+    public void modSizeByOrderId(final Map<Double, List<Order>> map, final long orderId,
+                                 final long newSize) {
         map.forEach((key, value) -> value.stream().filter(order -> order.id() ==
                 orderId).forEachOrdered(order -> order.size(newSize)));
     }
@@ -99,7 +108,7 @@ public class OrderBook implements Serializable {
     public Double getPriceBySideAndLevel(final OrderSide side, int level) {
         if (side.asChar() == OrderSide.BID.asChar()) {
             return getPrice(bid, level);
-        } else if (side.asChar() == OrderSide.ASK.asChar()) {
+        } else if (side.asChar() == OrderSide.OFFER.asChar()) {
             return getPrice(offer, level);
         } else {
             // TODO: Log this.
@@ -118,7 +127,7 @@ public class OrderBook implements Serializable {
     public Long getTotalSizeBySideAndLevel(final OrderSide side, final int level) {
         if (side.asChar() == OrderSide.BID.asChar()) {
             return getTotalSize(bid, level);
-        } else if (side.asChar() == OrderSide.ASK.asChar()) {
+        } else if (side.asChar() == OrderSide.OFFER.asChar()) {
             return getTotalSize(offer, level);
         } else {
             // TODO: Log this.
@@ -135,7 +144,7 @@ public class OrderBook implements Serializable {
     public void printMap(final OrderSide side) {
         if (side.asChar() == OrderSide.BID.asChar()) {
             printOrderBook(bid);
-        } else if (side.asChar() == OrderSide.ASK.asChar()) {
+        } else if (side.asChar() == OrderSide.OFFER.asChar()) {
             printOrderBook(offer);
         } else {
             // TODO: Log this.
@@ -174,9 +183,8 @@ public class OrderBook implements Serializable {
      * @param map order book.
      */
     private void printOrderBook(final Map<Double, List<Order>> map) {
-        map.forEach((key, value) -> {
-            value.forEach(System.out::println);
-        });
+        Stream.of(map.entrySet())
+                .forEach(System.out::println);
     }
 
     /**
