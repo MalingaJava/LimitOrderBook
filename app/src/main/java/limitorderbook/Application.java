@@ -5,7 +5,7 @@ package limitorderbook;
  *
  * @author Malinga.
  */
-public class Application { 
+public class Application {
 
     /**
      * Main method of the program.
