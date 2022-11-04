@@ -1,5 +1,10 @@
 package limitorderbook;
 
+/**
+ * Order side constants.
+ *
+ * @author Malinga.
+ */
 public enum OrderSide {
     // TODO: Implement this properly
     BID('B'),
