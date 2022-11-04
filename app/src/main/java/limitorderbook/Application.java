@@ -1,8 +1,5 @@
 package limitorderbook;
 
-import java.util.LinkedList;
-import java.util.List;
-
 /**
  * Main application.
  *

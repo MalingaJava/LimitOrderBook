@@ -21,7 +21,7 @@ public class OrderBook implements Serializable {
     // This is ConcurrentNavigableMap why I choose this, we may discuss during the interview.
     private final ConcurrentNavigableMap<Double, List<Order>> offer;
 
-    private int MAX_ORDER_BOOK_SIZE;
+    private final int MAX_ORDER_BOOK_SIZE;
 
     /**
      * This constructor will instantiate bid/offer maps as ConcurrentSkipListMap.
@@ -29,7 +29,7 @@ public class OrderBook implements Serializable {
      * Offer order book is sorted Ascending order from the price.
      * Also note that it will keep the same price orders in a LinkedList on time priority basis.
      */
-    public OrderBook(){
+    public OrderBook() {
         this.MAX_ORDER_BOOK_SIZE = 10;
         bid = new ConcurrentSkipListMap<>((k1, k2) -> Double.compare(k2, k1));
         offer = new ConcurrentSkipListMap<>();
@@ -205,7 +205,7 @@ public class OrderBook implements Serializable {
      * @param orderId order id.
      * @return return true if its BID, false otherwise.
      */
-    private ConcurrentNavigableMap<Double, List<Order>> checkSideByOrderId(final long orderId){
+    private ConcurrentNavigableMap<Double, List<Order>> checkSideByOrderId(final long orderId) {
         return (orderId % 2 == 0) ? bid : offer;
     }
 
