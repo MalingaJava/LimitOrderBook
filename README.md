@@ -29,8 +29,8 @@ There is a simple main method to demonstrate the use cases.
 Or if you have gradle 7.5.1
 <code>gradle run</code>
 
-<p style="color:blue">Note: Please note that before compilation gradle will run Checkstyle, SpotBug and PMD to make sure\
-code is in good quality.</p>
+**Note: Please note that before compilation gradle will run Checkstyle, SpotBug and PMD to make sure\
+code is in good quality.**
 
 # Answer to the Part B of the assignment
 Question:
