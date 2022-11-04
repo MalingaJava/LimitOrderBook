@@ -1,5 +1,5 @@
 plugins {
-    // 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
+    // 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
     id "com.github.spotbugs" version "5.0.12"
     id 'application'
     id 'idea'
