@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 /**
  * This is the implementation of a limit order book stores customer orders on
  * a price time priority basis. for more information please read
- * ./resources/JavaTechnicalTest-OrderBook.pdf.
+ * JavaTechnicalTest-OrderBook.pdf.
  *
  * @author Malinga.
  */
@@ -28,7 +28,7 @@ public class OrderBook implements Serializable {
      * Offer order book is sorted Ascending order from the price.
      * Also note that it will keep the same price orders in a LinkedList on time priority basis.
      *
-     * @param orderBookSize
+     * @param orderBookSize order book size.
      */
     public OrderBook(final int orderBookSize) {
         // TODO: Validate orderBookSize
@@ -74,7 +74,7 @@ public class OrderBook implements Serializable {
     /**
      * This is the third use case of the assignment.
      * Given an order id and a new size, modify an existing order in the book to use the new size
-     * (size modi􏰁- cations do not e􏰀ect time priority).
+     * (size modifications do not effect time priority).
      *
      * @param map     // TODO: Remove this
      * @param orderId order id.
